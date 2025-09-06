@@ -3,19 +3,18 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 type CancelAppointmentDialogProps = {
   id: number;
   trigger: React.ReactNode;
+  onAppointmentCancelled: () => void;
 };
 
-export default function CancelAppointmentDialog({ id, trigger }: CancelAppointmentDialogProps) {
+export default function CancelAppointmentDialog({ id, trigger, onAppointmentCancelled }: CancelAppointmentDialogProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleDelete = async () => {
     setLoading(true);
@@ -35,10 +34,10 @@ export default function CancelAppointmentDialog({ id, trigger }: CancelAppointme
         }
       );
 
-      toast.success(response?.data?.message || "The Appointment has been deleted")
+      toast.success(response?.data?.message || "The Appointment has been deleted");
 
       setOpen(false);
-      router.refresh();
+      onAppointmentCancelled();
     } catch (err) {
       console.error(err);
       toast.error("Error deleting appointment");

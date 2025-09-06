@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react'; // Add useCallback
 import Image from 'next/image';
 import Link from 'next/link';
 import CancelAppointmentDialog from '@/components/appointment/CancelAppointmentDialog';
@@ -23,7 +23,8 @@ const MyAppointments = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchAppointments = useCallback(() => {
+    setLoading(true);
     const authToken = localStorage.getItem('authToken');
     const userId = localStorage.getItem('id');
 
@@ -50,6 +51,10 @@ const MyAppointments = () => {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    fetchAppointments();
+  }, [fetchAppointments]);
 
   if (loading) return <div className='h-[89vh] flex items-center justify-center'>Loading...</div>;
   if (error) return <div className='h-[89vh] flex items-center justify-center px-[30px] md:px-[60px]'>
@@ -100,6 +105,7 @@ const MyAppointments = () => {
 
                 <CancelAppointmentDialog
                   id={item.id}
+                  onAppointmentCancelled={fetchAppointments}
                   trigger={
                     <button className='w-full sm:!w-fit text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300'>
                       Cancel appointment

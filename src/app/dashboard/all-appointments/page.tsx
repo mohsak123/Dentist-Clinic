@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext"
 import { DataTable } from "@/components/DataTable"
 import { RecordPayload } from "@/components/dialog/RecordAppointmentDialog"
 import { appointmentsColumns } from "@/components/columns/appointmentsColumns"
+import axios from "axios"
 
 export interface Appointment {
   id: number
@@ -62,12 +63,22 @@ export default function AppointmentsPage() {
   
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/appointment/${id}/`, {
-        method: "DELETE",
-        headers: { Authorization: `Token ${token}` },
-      })
-      if (!response.ok) throw new Error("Failed to delete appointment")
-      toast.success("Appointment deleted successfully")
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        toast.error("Authentication token not found");
+        return;
+      }
+
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/appointment/delete/?id=${id}`,
+        {
+          headers: {
+            "Authorization": `Token ${token}`,
+          },
+        }
+      );
+
+      toast.success(response?.data?.message || "The Appointment has been deleted");
       fetchAppointments()
     } catch {
       toast.error("Failed to delete appointment")

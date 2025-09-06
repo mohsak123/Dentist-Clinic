@@ -7,6 +7,7 @@ import { ArrowUpDown, FileText, Pencil } from "lucide-react"
 import DeleteDialog from "@/components/dialog/DeleteDialogProps"
 import RecordAppointmentDialog, { RecordPayload } from "@/components/dialog/RecordAppointmentDialog"
 import { useState } from "react"
+import Link from "next/link"
 
 export interface AppointmentWithDate {
   id: number
@@ -54,9 +55,12 @@ export const appointmentsColumns = ({ onDelete, onRecord }: ColumnProps): Column
       return (
         <div className="flex items-center gap-2">
           {appointment.has_record ? (
-            <Button variant="outline" size="sm" disabled>
-              Recorded
-            </Button>
+            <Link href={`/my-appointments/record/${appointment.id}`}>
+              <Button variant="outline" size="sm">
+                <FileText className="h-4 w-4 mr-1" />
+                Show Record
+              </Button>
+            </Link>
           ) : (
             <>
               <RecordAppointmentDialog
@@ -65,7 +69,7 @@ export const appointmentsColumns = ({ onDelete, onRecord }: ColumnProps): Column
                 appointmentId={appointment.id}
                 onSubmit={onRecord}
               />
-              <Button variant="outline" size="sm" onClick={() => setRecordOpen(true)}>
+              <Button className="w-[125px]" variant="outline" size="sm" onClick={() => setRecordOpen(true)}>
                 <FileText className="h-4 w-4 mr-1" /> Record
               </Button>
             </>

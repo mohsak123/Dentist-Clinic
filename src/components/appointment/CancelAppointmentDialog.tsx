@@ -26,7 +26,7 @@ export default function CancelAppointmentDialog({ id, trigger, onAppointmentCanc
       }
 
       const response = await axios.delete(
-        `https://clinic-ashen.vercel.app/appointment/delete/?id=${id}`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/appointment/delete/?id=${id}`,
         {
           headers: {
             "Authorization": `Token ${token}`,

@@ -59,19 +59,19 @@ export const usersColumns = ({ onDelete }: ColumnProps): ColumnDef<User>[] => [
     header: "Doctor",
     cell: ({ row }) => (row.original.is_staff ? "Yes" : "No"),
   },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => {
-      const user = row.original
-      return (
-        <div className="flex gap-2">
-          <DeleteDialog
-            triggerText="Delete"
-            onConfirm={() => onDelete(user.id)}
-          />
-        </div>
-      )
-    },
-  },
+  // {
+  //   id: "actions",
+  //   header: "Actions",
+  //   cell: ({ row }) => {
+  //     const user = row.original
+  //     return (
+  //       <div className="flex gap-2">
+  //         <DeleteDialog
+  //           triggerText="Delete"
+  //           onConfirm={() => onDelete(user.id)}
+  //         />
+  //       </div>
+  //     )
+  //   },
+  // },
 ]

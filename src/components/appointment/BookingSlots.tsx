@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 type Slot = {
   dateTime: Date;
@@ -20,6 +21,7 @@ const BookingSlots = () => {
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
   const { token } = useAuth();
+  const router = useRouter();
 
   const getAvailableSlots = () => {
     let allSlots: Slot[][] = [];
@@ -38,7 +40,6 @@ const BookingSlots = () => {
         currentDate.setHours(currentHour > 8 ? currentHour : 9);
         currentDate.setMinutes(currentMinutes > 30 ? 0 : 30);
         if (currentMinutes > 30) currentDate.setHours(currentDate.getHours() + 1);
-
       } else {
         currentDate.setHours(9, 0, 0, 0);
       }
@@ -91,10 +92,16 @@ const BookingSlots = () => {
           'Authorization': `Token ${token}`,
         }
       });
-
-      toast.success('Appointment booked successfully!');
-      setSelectedSlot(null);
-      setReason('');
+      
+      if (response.status === 201) {
+        toast.success('Appointment booked successfully!');
+        setSelectedSlot(null);
+        setReason('');
+        
+        setTimeout(() => {
+          router.push("/my-appointments");
+        }, 1500);
+      }
 
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -114,7 +121,6 @@ const BookingSlots = () => {
   useEffect(() => {
     setSelectedSlot(null);
   }, [slotIndex]);
-
 
   return (
     <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'>

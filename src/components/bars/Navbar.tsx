@@ -4,8 +4,8 @@ import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image'
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react'
-
+import React, { useState, useMemo } from 'react'
+import LogoutDialog from '../dialog/LogoutDialog';
 
 type LinksProps = {
   name: string;
@@ -13,24 +13,20 @@ type LinksProps = {
 }
 
 const Navbar = () => {
-
   const pathname = usePathname();
   const router = useRouter();
-  const { isAuthenticated, logout } = useAuth();
-  const [isDoctor, setIsDoctor] = useState(true);
+  const { isAuthenticated, isStaff } = useAuth();
 
-  const links: LinksProps[] = [
+  const links: LinksProps[] = useMemo(() => [
     { name: "home", path: "/" },
     { name: "about us", path: "/about" },
     { name: "contact us", path: "/contact" },
-    ...(isDoctor ? [{ name: "dashboard", path: "/dashboard" }] : [])
-  ]
+    ...(isStaff ? [{ name: "dashboard", path: "/dashboard" }] : [])
+  ], [isStaff]);
 
   const [showMenu, setShowMenu] = useState(false);
 
-
-  const handleLogout = () => {
-    logout();
+  const handleLogoutSuccess = () => {
     router.push('/');
   };
 
@@ -69,7 +65,11 @@ const Navbar = () => {
                 <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
                   <Link href="/my-profile" className='hover:text-black cursor-pointer'>My Profile</Link>
                   <Link href="/my-appointments" className='hover:text-black cursor-pointer'>My Appointments</Link>
-                  <p onClick={handleLogout} className='hover:text-black cursor-pointer'>Logout</p>
+                  
+                  <LogoutDialog onLogoutSuccess={handleLogoutSuccess}>
+                    <p className='hover:text-black cursor-pointer'>Logout</p>
+                  </LogoutDialog>
+
                 </div>
               </div>
             </div>

@@ -31,7 +31,7 @@ const ProfileData = () => {
           phone: data.phone || '',
           dob: data.dob || '',
           gender: data.gender || 'M',
-          image: data.image || '/images/profile.jpg',
+          image: data.image || '/images/profile.png',
         });
       })
       .catch(err => console.error(err));

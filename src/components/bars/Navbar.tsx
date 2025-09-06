@@ -59,7 +59,7 @@ const Navbar = () => {
         <div className='flex items-center justify-end gap-3'>
           {
             isAuthenticated ? <div className='flex items-center gap-2 cursor-pointer group relative'>
-              <Image src="/images/profile.jpg" alt='' width={32} height={32} className='rounded-full w-8 h-8 object-cover' />
+              <Image src="/images/profile.png" alt='' width={32} height={32} className='rounded-full w-8 h-8 object-cover' />
               <Image src="/images/arrow-down.svg" alt='' width={10} height={10} />
               <div className='absolute top-0 right-0 pt-14 text-textColor font-medium text-gray-600 z-20 hidden group-hover:block'>
                 <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>

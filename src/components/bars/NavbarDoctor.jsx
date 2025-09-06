@@ -3,18 +3,16 @@
 import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React from 'react'
+import LogoutDialog from '../dialog/LogoutDialog';
 
 const NavbarDoctor = () => {
+  const router = useRouter();
 
-    const { isAuthenticated, logout } = useAuth();
-    const router = useRouter();
-
-    const handleLogout = () => {
-      logout();
-      router.push('/');
-    };
+  const handleLogoutSuccess = () => {
+    router.push('/');
+  };
 
   return (
     <div>
@@ -25,7 +23,13 @@ const NavbarDoctor = () => {
           />
           <p className='border px-2.5 py-0.5 rounded-full border-gray-500 text-gray-600'>Doctor</p>
         </Link>
-        <button onClick={handleLogout} className='bg-mainColor text-white text-sm px-10 py-2 rounded-full'>Logout</button>
+        
+        <LogoutDialog onLogoutSuccess={handleLogoutSuccess}>
+          <button className='bg-mainColor text-white text-sm px-10 py-2 rounded-full'>
+            Logout
+          </button>
+        </LogoutDialog>
+
       </div>
     </div>
   )

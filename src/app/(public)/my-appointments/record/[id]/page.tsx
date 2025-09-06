@@ -6,9 +6,8 @@ import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { useAuth } from "@/context/AuthContext"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { FileText, Camera, X, ZoomIn, Loader2, Info } from "lucide-react"
+import { FileText, Camera, X, ZoomIn, Loader2, Info, Bot } from "lucide-react" // 1. Import Bot icon
 
 interface ImageData {
   id: number;
@@ -22,7 +21,7 @@ interface AppointmentData {
   record: {
     appointment: number;
     text_note: string;
-  };
+  } | null;
   images: ImageData[];
 }
 
@@ -105,8 +104,6 @@ export default function DentalAppointmentRecord() {
     return `data:${mimeType};base64,${base64String}`;
   }
 
-
-
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8" dir="ltr">
       <div className="max-w-7xl mx-auto">
@@ -145,6 +142,36 @@ export default function DentalAppointmentRecord() {
                     </p>
                   </CardContent>
                 </Card>
+
+                {/* 2. Start of the new AI Analysis section */}
+                {appointmentData.images && appointmentData.images.length > 0 && (
+                  <Card className="shadow-lg border-0 bg-white">
+                    <CardHeader className="bg-indigo-600 text-white rounded-t-lg">
+                      <CardTitle className="text-lg md:text-xl font-black flex items-center gap-2" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                        <Bot className="w-5 h-5 md:w-6 md:h-6" />
+                        AI Analysis
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6 space-y-4">
+                      {appointmentData.images.map((image) => (
+                        <div key={image.id} className="flex gap-4 p-3 bg-slate-50 rounded-lg items-start border">
+                          <img
+                            src={createImageUrl(image.image, image.mime_type)}
+                            alt={`Thumbnail for analysis ${image.id}`}
+                            className="w-20 h-20 object-cover rounded-md border-2 border-white shadow-sm shrink-0"
+                          />
+                          <div className="flex-1">
+                            <p className="text-sm text-slate-600 leading-relaxed" style={{ fontFamily: "var(--font-open-sans), sans-serif" }}>
+                              {image.gemini_analysis}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                )}
+                {/* End of the new AI Analysis section */}
+
               </div>
 
               <div>
@@ -216,4 +243,3 @@ export default function DentalAppointmentRecord() {
     </div>
   )
 }
-

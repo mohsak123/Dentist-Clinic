@@ -16,7 +16,8 @@ const NavbarDoctor = () => {
   
   useEffect(()=>{
     const isStaff = localStorage.getItem("isStaff")
-    if(!isStaff){
+    console.log(isStaff)
+    if(isStaff === "false"){
       router.push('/');
     }
   },[router])

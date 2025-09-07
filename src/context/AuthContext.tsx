@@ -42,10 +42,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (!res.ok) throw new Error("Failed to fetch user data");
 
           const user = await res.json();
-          setUserId(user.id);
-          setIsStaff(user.is_staff);
-          localStorage.setItem("id", user.id.toString());
-          localStorage.setItem("isStaff", user.is_staff.toString());
+          await setUserId(user?.id);
+          await setIsStaff(user?.is_staff);
+          await localStorage.setItem("id", user?.id.toString());
+          await localStorage.setItem("isStaff", user?.is_staff.toString());
         } catch (err) {
           console.error("Error fetching user data:", err);
           logout(); 

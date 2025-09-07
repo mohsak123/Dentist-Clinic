@@ -48,7 +48,6 @@ export default function UsersPage() {
 
         
       const data: User[] = await response.json()
-      console.log(data)
       setUsers(data)
       setNext(null)
       setPrevious(null)

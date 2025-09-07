@@ -16,6 +16,11 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
+export const metadata = {
+  title: "Clinic Auth",
+  description: "this is auth for website",
+};
+
 export default function RootLayout({
   children,
 }: {

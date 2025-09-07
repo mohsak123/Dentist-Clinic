@@ -4,14 +4,12 @@ import { useEffect } from "react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { DialogFooter } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import toast from "react-hot-toast"
 import { useAuth } from "@/context/AuthContext"
-
 export interface Material {
   id: number
   name: string
@@ -21,9 +19,10 @@ export interface Material {
 }
 
 const schema = z.object({
-  quantity: z
-    .number("The quantity should ba a number.")
-    .nonnegative("The quantity should ba bigger than 0."),
+  name: z.string().min(1, "The name is required."),
+  description: z.string().min(1, "The description is required."),
+  quantity: z.number().nonnegative("Quantity should be bigger or equal to 0."),
+  price: z.string().min(1, "Price is required."),
 })
 
 type FormValues = z.infer<typeof schema>
@@ -39,29 +38,29 @@ export default function EditMaterialDialog({
   open,
   onOpenChange,
   material,
-  onUpdated
+  onUpdated,
 }: EditMaterialDialogProps) {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-    setValue,
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { quantity: material?.quantity ?? 0 },
   })
 
-  const {token} = useAuth();
+  const { token } = useAuth()
 
-  // Sync form when material changes
   useEffect(() => {
     if (material) {
-      setValue("quantity", material.quantity)
-    } else {
-      reset({ quantity: 0 })
+      reset({
+        name: material.name,
+        description: material.description,
+        quantity: material.quantity,
+        price: material.price,
+      })
     }
-  }, [material, setValue, reset])
+  }, [material, reset])
 
   const onSubmit = async (values: FormValues) => {
     if (!material) return
@@ -74,7 +73,7 @@ export default function EditMaterialDialog({
             "Content-Type": "application/json",
             Authorization: `Token ${token}`,
           },
-          body: JSON.stringify({ quantity: values.quantity }),
+          body: JSON.stringify(values),
         }
       )
 
@@ -83,11 +82,11 @@ export default function EditMaterialDialog({
       }
 
       const updated: Material = await res.json()
-      toast.success("Edit material has been successfully")
+      toast.success("Material updated successfully")
       onOpenChange(false)
       if (onUpdated) onUpdated(updated)
     } catch (e) {
-      toast.error("صار خطأ أثناء التحديث")
+      toast.error("An error occurred while updating.")
       console.log(e)
     }
   }
@@ -96,40 +95,58 @@ export default function EditMaterialDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit the quantity of material</DialogTitle>
+          <DialogTitle>Edit Material</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Name Field */}
+          <div>
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" placeholder="Enter material name" {...register("name")} className="mt-1" />
+            {errors.name && <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>}
+          </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <Label htmlFor="quantity">The new quantity</Label>
-              <Input
-                id="quantity"
-                type="number"
-                step="0.1"
-                min="0"
-                {...register("quantity", {
-                  setValueAs: (v: any) => (v === "" || v === null ? 0 : Number(v)),
-                })}
-                className="mt-1"
-                placeholder="Enter the new quantity"
-              />
-              {errors.quantity && (
-                <p className="text-sm text-red-600 mt-1">{errors.quantity.message}</p>
-              )}
-            </div>
+          <div>
+            <Label htmlFor="description">Description</Label>
+            <Input
+              id="description"
+              placeholder="Enter description"
+              {...register("description")}
+              className="mt-1"
+            />
+            {errors.description && <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>}
+          </div>
 
-            <DialogFooter className="gap-2">
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
-                cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "loading..." : "save changes"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </div>
+          <div>
+            <Label htmlFor="quantity">Quantity</Label>
+            <Input
+              id="quantity"
+              type="number"
+              min="0"
+              {...register("quantity", {
+                setValueAs: (v: any) => (v === "" || v === null ? 0 : Number(v)),
+              })}
+              className="mt-1"
+              placeholder="Enter the quantity"
+            />
+            {errors.quantity && <p className="text-sm text-red-600 mt-1">{errors.quantity.message}</p>}
+          </div>
+
+          <div>
+            <Label htmlFor="price">Price</Label>
+            <Input id="price" placeholder="Enter price" {...register("price")} className="mt-1" />
+            {errors.price && <p className="text-sm text-red-600 mt-1">{errors.price.message}</p>}
+          </div>
+
+          <DialogFooter className="gap-2 sm:justify-end pt-4">
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "Save Changes"}
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   )

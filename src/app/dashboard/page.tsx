@@ -52,10 +52,6 @@ const DashboardHomePage = () => {
         axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/materials/`, { headers })
       ]);
 
-      console.log(appointmentsRes)
-      console.log(usersRes)
-      console.log(materialsRes.data.count)
-
       const appointmentsCount = Array.isArray(appointmentsRes.data) ? appointmentsRes.data.length : 0;
       const usersCount = Array.isArray(usersRes.data) ? usersRes.data.length : 0;
       const materialsCount = materialsRes.data.count ? materialsRes.data.count : 0;

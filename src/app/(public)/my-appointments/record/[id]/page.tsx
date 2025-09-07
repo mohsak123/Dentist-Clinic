@@ -57,15 +57,16 @@ export default function DentalAppointmentRecord() {
   const params = useParams()
   const appointmentId = params.id as string
 
-  const token = localStorage.getItem("authToken")
+  const { token } = useAuth();
 
   const router = useRouter();
-  
+
   useEffect(() => {
-    if (!token) {
+    const tokenFromStorage = localStorage.getItem("authToken")
+    if (!tokenFromStorage) {
       router.push("/login")
     }
-  },[router, token])
+  },[router])
 
   useEffect(() => {
     if (!appointmentId) {

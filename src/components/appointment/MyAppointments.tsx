@@ -30,13 +30,12 @@ const MyAppointments = () => {
   
   const router = useRouter();
 
-  const token = localStorage.getItem("authToken")
-
   useEffect(() => {
-    if (!token) {
+    const tokenFromStorage = localStorage.getItem("authToken")
+    if (!tokenFromStorage) {
       router.push("/login")
     }
-  },[router, token])
+  },[router])
 
   const fetchAppointments = useCallback(() => {
     setLoading(true);
@@ -73,7 +72,7 @@ const MyAppointments = () => {
 
       if (loading) {
         return (
-          <div className='flex justify-center items-center w-full h-[56vh]'>
+          <div className='flex justify-center items-center w-full h-[75vh]'>
             <Lottie
               animationData={teeth} 
               loop={true} 

@@ -13,13 +13,14 @@ const NavbarDoctor = () => {
     router.push('/');
   };
 
-  const isStaff = localStorage.getItem("isStaff")
-
+  
   useEffect(()=>{
+    const isStaff = localStorage.getItem("isStaff")
     if(!isStaff){
       router.push('/');
     }
-  },[])
+  },[router])
+  
 
   return (
     <div>

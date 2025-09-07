@@ -13,13 +13,12 @@ const ProfileData = () => {
 
   const router = useRouter();
 
-  const token = localStorage.getItem("authToken")
-
   useEffect(() => {
-    if (!token) {
+    const tokenFromStorage = localStorage.getItem("authToken")
+    if (!tokenFromStorage) {
       router.push("/login")
     }
-  },[router, token])
+  },[router])
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");

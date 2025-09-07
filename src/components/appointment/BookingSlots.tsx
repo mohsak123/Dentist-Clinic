@@ -23,6 +23,14 @@ const BookingSlots = () => {
   const { token } = useAuth();
   const router = useRouter();
 
+  useEffect(()=> {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      router.push("/login")
+    }
+  },[router])
+
   const getAvailableSlots = () => {
     let allSlots: Slot[][] = [];
     let today = new Date();

@@ -119,7 +119,7 @@ const FormSubmit = () => {
 
 
   return (
-    <form onSubmit={onSubmitHandler} className='min-h-[70vh] flex items-center outfit-font mt-8'>
+    <form onSubmit={onSubmitHandler} className='min-h-[100vh] flex items-center outfit-font py-5'>
       <div className='flex flex-col gap-4 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg'>
         <p className='text-2xl font-semibold text-zinc-800'>{state === "Sign Up" ? "Create Account" : "Login"}</p>
         <p>Please {state === "Sign Up" ? "sign up" : "log in"} to book an appointment</p>

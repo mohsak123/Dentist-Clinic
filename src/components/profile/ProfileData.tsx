@@ -2,6 +2,8 @@
 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import teeth from "../../../public/animations/cleantooth.json"
+import Lottie from 'lottie-react';
 
 const ProfileData = () => {
   const [userData, setUserData] = useState<any>(null);
@@ -37,7 +39,17 @@ const ProfileData = () => {
       .catch(err => console.error(err));
   }, []);
 
-  if (!userData) return <div>Loading...</div>;
+    if (!userData) {
+      return (
+        <div className='flex justify-center items-center w-full h-[75vh]'>
+          <Lottie
+            animationData={teeth} 
+            loop={true} 
+            style={{ width: 125, height: 125 }} 
+          />
+        </div>
+      );
+    }
 
   return (
     <div className='max-w-lg flex flex-col gap-2 text-sm'>

@@ -4,6 +4,8 @@ import React, { useEffect, useState, useCallback } from 'react'; // Add useCallb
 import Image from 'next/image';
 import Link from 'next/link';
 import CancelAppointmentDialog from '@/components/appointment/CancelAppointmentDialog';
+import Lottie from 'lottie-react';
+import teeth from "../../../public/animations/cleantooth.json"
 
 type Appointment = {
   id: number;
@@ -56,7 +58,17 @@ const MyAppointments = () => {
     fetchAppointments();
   }, [fetchAppointments]);
 
-  if (loading) return <div className='h-[89vh] flex items-center justify-center'>Loading...</div>;
+      if (loading) {
+        return (
+          <div className='flex justify-center items-center w-full h-[56vh]'>
+            <Lottie
+              animationData={teeth} 
+              loop={true} 
+              style={{ width: 125, height: 125 }} 
+            />
+          </div>
+        );
+      }
   if (error) return <div className='h-[89vh] flex items-center justify-center px-[30px] md:px-[60px]'>
     <p className="text-red-500">Error: {error}</p>
   </div>;
@@ -80,7 +92,7 @@ const MyAppointments = () => {
               </div>
 
               <div className='flex-1 text-zinc-600'>
-                <p className='text-neutral-800 font-semibold'>{item?.name || 'Doctor Name'}</p>
+                <p className='text-neutral-800 font-semibold'>{item?.name || 'Mohammed'}</p>
                 <p className='text-xs mt-1'>
                   <span className='text-sm text-neutral-700 font-medium'>Date:</span> {date}
                 </p>

@@ -6,7 +6,9 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import teeth from "../../public/animations/cleantooth.json";
+import Lottie from "lottie-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -41,8 +43,12 @@ export function DataTable<TData, TValue>({ columns, data, loading }: DataTablePr
           {loading ? (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-[44.7vh] sm:h-[55vh] text-center">
-                <div className="flex items-center justify-center h-full">
-                  Loading...
+                <div className='flex justify-center items-center w-full h-full'>
+                  <Lottie
+                    animationData={teeth} 
+                    loop={true} 
+                    style={{ width: 75, height: 75 }} 
+                  />
                 </div>
               </TableCell>
             </TableRow>

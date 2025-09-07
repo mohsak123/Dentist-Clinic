@@ -143,7 +143,6 @@ export default function DentalAppointmentRecord() {
                   </CardContent>
                 </Card>
 
-                {/* 2. Start of the new AI Analysis section */}
                 {appointmentData.images && appointmentData.images.length > 0 && (
                   <Card className="shadow-lg border-0 bg-white">
                     <CardHeader className="bg-indigo-600 text-white rounded-t-lg">

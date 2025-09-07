@@ -4,10 +4,22 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import teeth from "../../../public/animations/cleantooth.json"
 import Lottie from 'lottie-react';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const ProfileData = () => {
   const [userData, setUserData] = useState<any>(null);
   const [isEdit, setIsEdit] = useState(false);
+
+  const router = useRouter();
+
+  const token = localStorage.getItem("authToken")
+
+  useEffect(() => {
+    if (!token) {
+      router.push("/login")
+    }
+  },[router, token])
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");

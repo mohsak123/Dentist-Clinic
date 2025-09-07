@@ -3,7 +3,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useAuth } from "@/context/AuthContext"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -57,7 +57,15 @@ export default function DentalAppointmentRecord() {
   const params = useParams()
   const appointmentId = params.id as string
 
-  const { token } = useAuth();
+  const token = localStorage.getItem("authToken")
+
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (!token) {
+      router.push("/login")
+    }
+  },[router, token])
 
   useEffect(() => {
     if (!appointmentId) {

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState, useMemo } from 'react'
 import LogoutDialog from '../dialog/LogoutDialog';
+import { CircleX, Menu } from 'lucide-react';
 
 type LinksProps = {
   name: string;
@@ -33,10 +34,13 @@ const Navbar = () => {
   return (
     <div className='poppins-font py-[17px] mx-4 sm:mx-[10%] outfit-font'>
       <div className='flex items-center justify-between'>
-        <Link href="/">
-          <Image src="/images/logo.svg" alt='logo' width={217} height={46}
-            className='w-32 md:w-[217]'
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/images/logo.jpg" alt='logo' width={50} height={60}
+            className=''
           />
+          <p className='text-[18px] sm:text-[22px] font-semibold text-[#000b6d]'>
+            DentoFolio
+          </p>
         </Link>
         <div className='hidden md:flex items-center justify-center gap-[48px]'>
           {
@@ -75,15 +79,22 @@ const Navbar = () => {
             </div>
               :
               <Link href="/login"
-                className='text-[18px] font-normal outfit-font rounded-[47px] bg-mainColor text-white px-[36px] py-[13.5px]'>
+                className='text-[12px] sm:text-[14px] lg:text-[18px] font-normal outfit-font rounded-[47px] bg-mainColor text-white px-[15px] sm:px-[20px] lg:px-[36px] py-[13.5px]'>
                 Create account
               </Link>
           }
-          <span onClick={() => setShowMenu(true)} className='w-6 md:hidden'>m</span>
+          <Menu onClick={() => setShowMenu(true)} className='w-6 md:hidden cursor-pointer' />
           <div className={`${showMenu ? "fixed w-full" : "w-0 h-0"} md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}>
             <div className='flex items-center justify-between px-5 py-6'>
-              <Image src="/images/logo.svg" alt='logo' width={144} height={46} className='w-36' />
-              <span className='w-7' onClick={() => setShowMenu(false)}>clo</span>
+              <div className='flex items-center gap-2'>
+                <Image src="/images/logo.jpg" alt='logo' width={50} height={60}
+                  className=''
+                />
+                <p className='text-[18px] sm:text-[22px] font-semibold text-[#000b6d]'>
+                  DentoFolio
+                </p>
+              </div>
+              <CircleX className='w-7 cursor-pointer' onClick={() => setShowMenu(false)} />
             </div>
             <ul className='flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium'>
               {

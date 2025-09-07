@@ -6,6 +6,8 @@ import Link from 'next/link';
 import CancelAppointmentDialog from '@/components/appointment/CancelAppointmentDialog';
 import Lottie from 'lottie-react';
 import teeth from "../../../public/animations/cleantooth.json"
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 type Appointment = {
   id: number;
@@ -20,10 +22,21 @@ type AppointmentsByDate = {
   [date: string]: Appointment[];
 };
 
+
 const MyAppointments = () => {
   const [data, setData] = useState<AppointmentsByDate>({});
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  const router = useRouter();
+
+  const token = localStorage.getItem("authToken")
+
+  useEffect(() => {
+    if (!token) {
+      router.push("/login")
+    }
+  },[router, token])
 
   const fetchAppointments = useCallback(() => {
     setLoading(true);
@@ -107,9 +120,9 @@ const MyAppointments = () => {
               </div>
 
               <div className='flex flex-col gap-2 justify-end w-full sm:w-auto'>
-                <button className='w-full sm:!w-fit text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-mainColor hover:text-white transition-all duration-300'>
+                {/* <button className='w-full sm:!w-fit text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-mainColor hover:text-white transition-all duration-300'>
                   Pay Online
-                </button>
+                </button> */}
 
                 <Link href={`/my-appointments/record/${item.id}`} className='w-full sm:!w-fit text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-mainColor hover:text-white transition-all duration-300'>
                   Show Record

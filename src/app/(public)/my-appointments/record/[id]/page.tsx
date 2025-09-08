@@ -8,6 +8,8 @@ import { useAuth } from "@/context/AuthContext"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { FileText, Camera, X, ZoomIn, Loader2, Info, Bot } from "lucide-react" // 1. Import Bot icon
+import Lottie from "lottie-react"
+import teeth from "../../../../../../public/animations/cleantooth.json";
 
 interface ImageData {
   id: number;
@@ -129,7 +131,12 @@ export default function DentalAppointmentRecord() {
         </div>
 
         {isLoading ? (
-          <LoadingSpinner />
+          // <LoadingSpinner />
+
+        <div className='flex justify-center items-center w-full h-[70vh]'>
+          <Lottie animationData={teeth} loop={true} style={{ width: 125, height: 125 }} />
+        </div>
+
         ) : error ? (
           <ErrorMessage message={error} />
         ) : appointmentData ? (
